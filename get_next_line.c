@@ -17,45 +17,71 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int   ft_l(char *s)
+int     size_p(char *str)
 {
-    static int i;
-    int j;
+    int i;
 
-    j = 0;
-    if(!(s))
-        return (0);
-    while (s[i] != '\n')
+    i = 0;
+    while (str[i] != '\n')
     {
-        ft_putchar('a');
-        ft_putchar(s[i]);
+        i++;
+       // printf("%d\n", i);
+    }
+    return (i);
+}
+
+char    *line_d(char *str)
+{
+    int i;
+    
+    i = 0;
+    str = ft_strsub(str, i, size_p(str));
+    //printf("[%s]\n", str);
+    while (i < 4)
+    {
         i++;
     }
-    return (1);
+    i++;
+    //printf("[%s]\n", str);
+    //s = ft_strchr(str, '\n');
+    return (str);
+}
+
+char    *recup(const int fd, char *str)
+{
+    int ret;
+    int g;
+    char buf[BUF_SIZE + 1];
+
+    g = 0;
+    while ((ret = read(fd, buf, BUF_SIZE)))
+    {
+        buf[ret] = '\0';
+        str = ft_strjoin(str, buf);
+        g = ret + g;
+    }
+    str[g - 1] = '\0';
+    if (close(fd) == -1)
+        return(0);
+    return (str);
 }
 
 int		get_next_line(const int fd, char **line)
 {   
-    int i;
-    int ret;
-    char buf[BUF_SIZE + 1];
-    char **s;
+    static char *str;
 
-    i = 0;
-    // while ((ret = read(fd, buf, BUF_SIZE)))
-    //     i++;
-    // if (!(s = (char**)malloc(sizeof(char*) * i + 1)))
-    //     s[i] = NULL;
-    while ((ret = read(fd, buf, BUF_SIZE)))
+    if (!str)
     {
-        buf[ret] = '\0';
-        line[i++] = ft_strdup(buf);
+        str = ft_strnew(0);
+        str = recup(fd ,str);
     }
-    i++;
-    s[i] = NULL;
-    while (ft_l(*line))
-        line++;
-    if (close(fd) == -1)
-        return(0);
+    //printf("%p\n", str);
+    //printf("{%p}\n", line);
+    str = line_d(str); 
+    printf("%p\n", s);
+    *line = &str;
+    printf("{%p}\n", line);
+     if (line)
+         return (1);
     return (0);
 }

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUF_SIZE 5
+# define BUF_SIZE 2
 
 # include "include/libft.h"
 
