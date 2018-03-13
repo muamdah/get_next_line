@@ -11,77 +11,54 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "include/libft.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdio.h>
 
-int     size_p(char *str)
+int		ft_strnnlen(char *str, char c)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (str[i] != '\n')
-    {
-        i++;
-       // printf("%d\n", i);
-    }
-    return (i);
+	i = 0;
+	if (str == NULL)
+		return (0);
+	while (str[i] && str[i] != c)
+		i++;
+	return (i);
 }
 
-char    *line_d(char *str)
+void	suite(char **line, char **str)
 {
-    int i;
-    
-    i = 0;
-    str = ft_strsub(str, i, size_p(str));
-    //printf("[%s]\n", str);
-    while (i < 4)
-    {
-        i++;
-    }
-    i++;
-    //printf("[%s]\n", str);
-    //s = ft_strchr(str, '\n');
-    return (str);
-}
+	char *tmp;
 
-char    *recup(const int fd, char *str)
-{
-    int ret;
-    int g;
-    char buf[BUF_SIZE + 1];
-
-    g = 0;
-    while ((ret = read(fd, buf, BUF_SIZE)))
-    {
-        buf[ret] = '\0';
-        str = ft_strjoin(str, buf);
-        g = ret + g;
-    }
-    str[g - 1] = '\0';
-    if (close(fd) == -1)
-        return(0);
-    return (str);
+	tmp = NULL;
+	*line = ft_strsub(*str, 0, ft_strnnlen(*str, '\n'));
+	tmp = ft_strsub(*str, ft_strnnlen(*str, '\n') + 1,
+		ft_strlen(&str[0][ft_strnnlen(*str, '\n')]));
+	ft_strdel(str);
+	*str = tmp;
 }
 
 int		get_next_line(const int fd, char **line)
-{   
-    static char *str;
+{
+	static char	*str[OPEN_MAX];
+	char		*tmp;
+	char		buf[BUFF_SIZE + 1];
+	int			ret;
 
-    if (!str)
-    {
-        str = ft_strnew(0);
-        str = recup(fd ,str);
-    }
-    //printf("%p\n", str);
-    //printf("{%p}\n", line);
-    str = line_d(str); 
-    printf("%p\n", s);
-    *line = &str;
-    printf("{%p}\n", line);
-     if (line)
-         return (1);
-    return (0);
+	if (fd < 0 || read(fd, "", 0) < 0 || line == NULL || fd > OPEN_MAX)
+		return (-1);
+	if (!str[fd])
+		str[fd] = ft_strnew(1);
+	while (!(ft_strchr(str[fd], '\n')))
+	{
+		ret = read(fd, buf, BUFF_SIZE);
+		if (ret == 0)
+			break ;
+		buf[ret] = '\0';
+		tmp = ft_strjoin(str[fd], buf);
+		ft_strdel(&str[fd]);
+		str[fd] = tmp;
+	}
+	if (ft_strlen(str[fd]) == 0)
+		return (0);
+	suite(line, &str[fd]);
+	return (1);
 }

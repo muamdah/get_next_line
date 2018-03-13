@@ -1,26 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: muamdah <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/15 14:59:36 by muamdah           #+#    #+#             */
-/*   Updated: 2018/03/12 16:10:35 by muamdah          ###   ########.fr       */
+/*   Created: 2017/12/29 19:04:00 by muamdah           #+#    #+#             */
+/*   Updated: 2018/01/18 09:16:46 by muamdah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 40
+#include "libft.h"
 
-# include <limits.h>
-# include "libft/libft.h"
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <fcntl.h>
+void	*ft_memmove(void *dst, const void *src, size_t n)
+{
+	size_t			i;
+	unsigned char	*d;
+	unsigned char	*s;
 
-void	suite(char **line, char **str);
-int		get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	d = (unsigned char *)dst;
+	s = (unsigned char *)src;
+	if (d > s)
+		while (i < n)
+		{
+			d[n - 1] = s[n - 1];
+			n--;
+		}
+	else
+		while (i < n)
+		{
+			d[i] = s[i];
+			i++;
+		}
+	return (dst);
+}
