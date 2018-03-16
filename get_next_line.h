@@ -12,15 +12,14 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFF_SIZE 40
 
+# define BUFF_SIZE 40
 # include <limits.h>
 # include "libft/libft.h"
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 
-void	suite(char **line, char **str);
 int		get_next_line(const int fd, char **line);
 
 #endif

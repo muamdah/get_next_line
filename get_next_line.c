@@ -12,30 +12,6 @@
 
 #include "get_next_line.h"
 
-int		ft_strnnlen(char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	if (str == NULL)
-		return (0);
-	while (str[i] && str[i] != c)
-		i++;
-	return (i);
-}
-
-void	suite(char **line, char **str)
-{
-	char *tmp;
-
-	tmp = NULL;
-	*line = ft_strsub(*str, 0, ft_strnnlen(*str, '\n'));
-	tmp = ft_strsub(*str, ft_strnnlen(*str, '\n') + 1,
-		ft_strlen(&str[0][ft_strnnlen(*str, '\n')]));
-	ft_strdel(str);
-	*str = tmp;
-}
-
 int		get_next_line(const int fd, char **line)
 {
 	static char	*str[OPEN_MAX];
@@ -47,11 +23,9 @@ int		get_next_line(const int fd, char **line)
 		return (-1);
 	if (!str[fd])
 		str[fd] = ft_strnew(1);
-	while (!(ft_strchr(str[fd], '\n')))
+	tmp = ft_strnew(1);
+	while (!(ft_strchr(str[fd], '\n'))&& (ret = read(fd, buf, BUFF_SIZE)))
 	{
-		ret = read(fd, buf, BUFF_SIZE);
-		if (ret == 0)
-			break ;
 		buf[ret] = '\0';
 		tmp = ft_strjoin(str[fd], buf);
 		ft_strdel(&str[fd]);
@@ -59,6 +33,9 @@ int		get_next_line(const int fd, char **line)
 	}
 	if (ft_strlen(str[fd]) == 0)
 		return (0);
-	suite(line, &str[fd]);
+	tmp = str[fd];
+	*line = ft_strsub(tmp, 0, ft_strnlen(tmp, '\n'));
+	str[fd] = ft_strsub(tmp, ft_strnlen(tmp, '\n') + 1,
+		ft_strlen(&tmp[ft_strnlen(tmp, '\n')]));
 	return (1);
 }
