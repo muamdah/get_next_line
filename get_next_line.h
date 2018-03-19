@@ -18,7 +18,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
-# include "libft/libft.h"
 # include <limits.h>
 
 int		get_next_line(const int fd, char **line);

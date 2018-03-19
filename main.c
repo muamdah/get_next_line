@@ -10,12 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/libft.h"
 #include "get_next_line.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdio.h>
 
 int     main(int argc, char **argv)
 {
@@ -33,7 +28,7 @@ int     main(int argc, char **argv)
     while (get_next_line(fd, &line) == 1)
     {
         ft_putstr(line);
-       //ft_putchar('i');
+        ft_putstr("#-------#");
     }
     
     return (0);
